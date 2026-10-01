@@ -1,0 +1,191 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services } from '../../data/site';
+import heroImg from '../../assets/images/excavator-trees.jpg';
+---
+
+<Layout
+  title="Services"
+  description="Land clearing, forestry mulching, tree removal, stump grinding, brush clearing and site prep. Free estimates from your local, family-owned crew."
+>
+  <PageHero
+    title="Our Services"
+    eyebrow="What we do"
+    subtitle="Whatever your land needs, we’ve got the crew and the equipment to handle it — and the local know-how to do it right."
+    image={heroImg}
+    imageAlt="Excavator clearing trees beside an open field"
+    crumbs={[{ label: 'Services' }]}
+  />
+
+  <nav class="jump" aria-label="Jump to a service">
+    <div class="container jump__inner">
+      {
+        services.map((s) => (
+          <a href={`#${s.slug}`}>
+            <Icon name={s.icon} size={18} /> {s.title}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="container rows">
+      {
+        services.map((s, i) => (
+          <article id={s.slug} class:list={['row reveal', { 'row--flip': i % 2 === 1 }]}>
+            <div class="row__media">
+              <Image src={s.image} alt={s.imageAlt} widths={[480, 720, 1080]} sizes="(max-width: 900px) 100vw, 560px" />
+              <span class="row__num">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="row__text">
+              <span class="row__icon">
+                <Icon name={s.icon} size={28} />
+              </span>
+              <h2>{s.title}</h2>
+              <p>{s.intro}</p>
+              <ul class="check-list">
+                {s.benefits.slice(0, 3).map((b) => (
+                  <li>
+                    <Icon name="check" size={22} /> {b}
+                  </li>
+                ))}
+              </ul>
+              <div class="btn-row">
+                <a href={`/services/${s.slug}`} class="btn btn--dark">
+                  Learn More <Icon name="arrowRight" size={18} />
+                </a>
+                <a href={`/contact?service=${s.slug}`} class="btn btn--outline-dark">
+                  Get a Quote
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBand title="Not sure which service you need?" text="That’s what we’re here for. Tell us what you’re hoping to do with your land and we’ll recommend the most cost-effective approach." />
+</Layout>
+
+<style>
+  .jump {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 50;
+    background: var(--black);
+    border-bottom: 3px solid var(--red);
+  }
+  .jump__inner {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .jump__inner::-webkit-scrollbar {
+    display: none;
+  }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 1rem 1rem;
+    color: #dcdcdc;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+  }
+  .jump a :global(svg) {
+    color: var(--red);
+  }
+  .jump a:hover {
+    color: var(--white);
+    border-bottom-color: var(--white);
+  }
+
+  .rows {
+    display: grid;
+    gap: clamp(4rem, 9vw, 7rem);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    scroll-margin-top: calc(var(--header-h) + 80px);
+  }
+  .row--flip .row__media {
+    order: 2;
+  }
+  .row__media {
+    position: relative;
+  }
+  .row__media :global(img) {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+  .row__num {
+    position: absolute;
+    top: -1.25rem;
+    left: -1rem;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--white);
+    background: var(--red);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius);
+  }
+  .row--flip .row__num {
+    left: auto;
+    right: -1rem;
+  }
+  .row__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: var(--red-tint);
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+  .row__text p {
+    color: var(--gray);
+  }
+
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .row--flip .row__media {
+      order: 0;
+    }
+    .row__num,
+    .row--flip .row__num {
+      left: 0.75rem;
+      right: auto;
+      top: 0.75rem;
+      font-size: 2rem;
+    }
+  }
+  @media (max-width: 1024px) {
+    .jump {
+      top: 0;
+      position: relative;
+    }
+  }
+</style>

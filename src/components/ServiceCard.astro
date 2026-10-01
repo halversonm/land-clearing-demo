@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Service } from '../data/site';
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+---
+
+<article class="card">
+  <a href={`/services/${service.slug}`} class="card__media" tabindex="-1" aria-hidden="true">
+    <span class="card__img"><Image
+      src={service.image}
+      alt=""
+      widths={[400, 640, 800]}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+    /></span>
+    <span class="card__icon"><Icon name={service.icon} size={26} /></span>
+  </a>
+  <div class="card__body">
+    <h3><a href={`/services/${service.slug}`}>{service.title}</a></h3>
+    <p>{service.short}</p>
+    <span class="link-arrow">Learn more <Icon name="arrowRight" size={16} /></span>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+  .card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+  }
+  .card__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .card:hover .card__media :global(img) {
+    transform: scale(1.06);
+  }
+  .card__icon {
+    position: absolute;
+    left: 1.25rem;
+    bottom: -26px;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--red);
+    color: var(--white);
+    border: 4px solid var(--white);
+    z-index: 1;
+  }
+  .card__body {
+    padding: 2.4rem 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .card__body p {
+    color: var(--gray);
+    flex: 1;
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  /* make the whole card clickable */
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .card:hover h3 a {
+    color: var(--red);
+  }
+</style>

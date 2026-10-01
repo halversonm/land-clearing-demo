@@ -1,0 +1,353 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site, services, type Service } from '../../data/site';
+
+import crewImg from '../../assets/images/crew-watching.jpg';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug).slice(0, 3);
+---
+
+<Layout title={service.title} description={service.short}>
+  <PageHero
+    title={service.title}
+    eyebrow="Our services"
+    subtitle={service.short}
+    image={service.image}
+    imageAlt={service.imageAlt}
+    crumbs={[{ label: 'Services', href: '/services' }, { label: service.title }]}
+  >
+    <div class="btn-row hero-btns">
+      <a href={`/contact?service=${service.slug}`} class="btn btn--red">Get a Free Quote <Icon name="arrowRight" size={18} /></a>
+      <a href={site.phoneHref} class="btn btn--outline-light"><Icon name="phone" size={18} /> {site.phone}</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container detail">
+      <div class="detail__main">
+        <span class="eyebrow">Overview</span>
+        <h2>{service.title} done right</h2>
+        <p class="lead">{service.intro}</p>
+
+        <h3>What’s included</h3>
+        <ul class="benefits">
+          {
+            service.benefits.map((b) => (
+              <li>
+                <span>
+                  <Icon name="check" size={20} />
+                </span>
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+
+        <figure class="detail__photo">
+          <Image src={crewImg} alt="Our crew on a clearing job" widths={[480, 800, 1200]} sizes="(max-width: 960px) 100vw, 720px" />
+          <figcaption>Every job is walked, planned and supervised by our owner-operators.</figcaption>
+        </figure>
+
+        <h3>Perfect for</h3>
+        <ul class="tags">
+          {service.idealFor.map((t) => <li>{t}</li>)}
+        </ul>
+
+        <h3>Common questions</h3>
+        <div class="faqs">
+          {
+            service.faqs.map((f, i) => (
+              <details open={i === 0}>
+                <summary>
+                  {f.q}
+                  <Icon name="chevronDown" size={20} />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+
+      <aside class="detail__side">
+        <div class="side-card side-card--dark">
+          <h3>Get a free estimate</h3>
+          <p>We’ll walk your property, answer your questions and give you a written quote — no obligation.</p>
+          <a href={`/contact?service=${service.slug}`} class="btn btn--red">Request Estimate</a>
+          <a href={site.phoneHref} class="side-card__phone"><Icon name="phone" size={20} /> {site.phone}</a>
+        </div>
+
+        <div class="side-card">
+          <h3>All services</h3>
+          <ul class="side-list">
+            {
+              services.map((s) => (
+                <li>
+                  <a href={`/services/${s.slug}`} class:list={{ current: s.slug === service.slug }} aria-current={s.slug === service.slug ? 'page' : undefined}>
+                    <Icon name={s.icon} size={18} /> {s.title}
+                    <Icon name="arrowRight" size={16} class="side-list__arrow" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="side-card side-card--promise">
+          <Icon name="award" size={32} />
+          <h3>Our promise</h3>
+          <p>If you’re not happy with the job, we’ll come back and make it right. That’s how we’ve done business since {site.founded}.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Explore more</span>
+        <h2>Other services</h2>
+      </div>
+      <div class="more">
+        {others.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .hero-btns {
+    margin-top: 1.75rem;
+  }
+  .detail {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: var(--gray);
+  }
+  .detail__main h3 {
+    margin-top: 2.5rem;
+  }
+  .benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .benefits li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-weight: 600;
+    background: var(--white);
+  }
+  .benefits span {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+  }
+  .detail__photo {
+    margin: 2.5rem 0 0;
+  }
+  .detail__photo :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+  .detail__photo figcaption {
+    margin-top: 0.75rem;
+    color: var(--gray);
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .tags li {
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--black);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .faqs {
+    display: grid;
+    gap: 0.75rem;
+  }
+  details {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+  details[open] {
+    border-color: var(--red);
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    font-weight: 700;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary :global(svg) {
+    flex-shrink: 0;
+    color: var(--red);
+    transition: transform 0.2s ease;
+  }
+  details[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+  details p {
+    padding: 0 1.25rem 1.1rem;
+    margin: 0;
+    color: var(--gray);
+  }
+
+  .detail__side {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .side-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--cream);
+  }
+  .side-card h3 {
+    font-size: 1.3rem;
+  }
+  .side-card--dark {
+    background: var(--black);
+    color: var(--white);
+    border-top: 5px solid var(--red);
+  }
+  .side-card--dark p {
+    color: var(--gray-light);
+  }
+  .side-card--dark .btn {
+    width: 100%;
+  }
+  .side-card__phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-family: var(--font-head);
+    font-size: 1.35rem;
+    text-decoration: none;
+    color: var(--white);
+  }
+  .side-card__phone :global(svg) {
+    color: var(--red);
+  }
+  .side-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .side-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    background: var(--white);
+  }
+  .side-list a :global(svg:first-child) {
+    color: var(--red);
+  }
+  .side-list a :global(.side-list__arrow) {
+    margin-left: auto;
+    opacity: 0.4;
+  }
+  .side-list a:hover,
+  .side-list a.current {
+    background: var(--red);
+    color: var(--white);
+  }
+  .side-list a:hover :global(svg),
+  .side-list a.current :global(svg) {
+    color: var(--white);
+    opacity: 1;
+  }
+  .side-card--promise {
+    background: var(--red);
+    color: var(--white);
+  }
+  .side-card--promise p {
+    margin: 0;
+  }
+
+  .more {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 960px) {
+    .detail {
+      grid-template-columns: 1fr;
+    }
+    .detail__side {
+      position: static;
+    }
+    .more {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .benefits,
+    .more {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

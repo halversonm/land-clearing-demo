@@ -1,0 +1,677 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, services } from '../data/site';
+
+import heroImg from '../assets/images/excavator-field.jpg';
+import sideImg from '../assets/images/tractor-field.jpg';
+
+// Paste a form endpoint here (e.g. https://formspree.io/f/xxxxxx) to receive submissions by email.
+// Leave empty to run the form in demo mode (validates and shows the success message only).
+const FORM_ENDPOINT = '';
+---
+
+<Layout
+  title="Contact Us"
+  description={`Request a free land clearing estimate from ${site.name}. Call ${site.phone} or send us a message.`}
+>
+  <PageHero
+    title="Get Your Free Estimate"
+    eyebrow="Contact us"
+    subtitle="Tell us a little about your property and what you’d like done. We’ll get back to you within one business day — usually sooner."
+    image={heroImg}
+    imageAlt="Excavator working near trees and brush"
+    crumbs={[{ label: 'Contact' }]}
+  />
+
+  <section class="section contact-section">
+    <div class="container contact">
+      <!-- FORM -->
+      <div class="form-card">
+        <div class="form-card__head">
+          <h2>Request a Quote</h2>
+          <p>Fields marked <span class="req">*</span> are required.</p>
+        </div>
+
+        <form id="quote-form" action={FORM_ENDPOINT || undefined} method="POST" novalidate data-endpoint={FORM_ENDPOINT}>
+          <fieldset>
+            <legend>Your information</legend>
+            <div class="grid-2">
+              <div class="field">
+                <label for="name">Full name <span class="req">*</span></label>
+                <input id="name" name="name" type="text" autocomplete="name" required placeholder="Jane Smith" />
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="phone">Phone <span class="req">*</span></label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="(555) 123-4567" pattern="[\d\s\-\(\)\+\.]{7,}" />
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="email">Email <span class="req">*</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="contact-pref">Best way to reach you</label>
+                <select id="contact-pref" name="contact_preference">
+                  <option>Phone call</option>
+                  <option>Text message</option>
+                  <option>Email</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>About your project</legend>
+            <div class="grid-2">
+              <div class="field field--full">
+                <label for="address">Property address or nearest town <span class="req">*</span></label>
+                <input id="address" name="property_location" type="text" autocomplete="street-address" required placeholder="123 County Rd, Pine Ridge" />
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="service">Service needed <span class="req">*</span></label>
+                <select id="service" name="service" required>
+                  <option value="">Select a service…</option>
+                  {services.map((s) => <option value={s.slug}>{s.title}</option>)}
+                  <option value="other">Other / Not sure</option>
+                </select>
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="acreage">Approximate size</label>
+                <select id="acreage" name="acreage">
+                  <option value="">Select…</option>
+                  <option>Under 1 acre</option>
+                  <option>1 – 5 acres</option>
+                  <option>5 – 20 acres</option>
+                  <option>20 – 50 acres</option>
+                  <option>50+ acres</option>
+                  <option>Not sure</option>
+                </select>
+              </div>
+              <div class="field field--full">
+                <span class="label">When would you like to start?</span>
+                <div class="chips" role="radiogroup" aria-label="Timeframe">
+                  <label class="chip"><input type="radio" name="timeframe" value="ASAP" /><span>ASAP</span></label>
+                  <label class="chip"><input type="radio" name="timeframe" value="Within a month" checked /><span>Within a month</span></label>
+                  <label class="chip"><input type="radio" name="timeframe" value="1-3 months" /><span>1–3 months</span></label>
+                  <label class="chip"><input type="radio" name="timeframe" value="Just planning" /><span>Just planning</span></label>
+                </div>
+              </div>
+              <div class="field field--full">
+                <label for="message">Tell us about your project <span class="req">*</span></label>
+                <textarea id="message" name="message" rows="5" required minlength="10" placeholder="What does the land look like now, and what would you like it to look like when we’re done?"></textarea>
+                <span class="error" aria-live="polite"></span>
+              </div>
+              <div class="field field--full">
+                <label for="referral">How did you hear about us?</label>
+                <select id="referral" name="referral">
+                  <option value="">Select…</option>
+                  <option>Friend or neighbor</option>
+                  <option>Google search</option>
+                  <option>Facebook</option>
+                  <option>Saw a job site / truck</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- honeypot for bots -->
+          <div class="hp" aria-hidden="true">
+            <label for="company">Company</label>
+            <input id="company" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <button type="submit" class="btn btn--red submit">
+            <span class="submit__label">Send My Request</span>
+            <Icon name="send" size={18} />
+          </button>
+          <p class="form-note"><Icon name="shield" size={16} /> We respect your privacy and never share your information.</p>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="success" hidden>
+          <span class="success__icon"><Icon name="checkCircle" size={44} /></span>
+          <h2>Thanks — we got it!</h2>
+          <p>
+            We’ll review your project and reach out within one business day. Need us sooner? Give us a call at
+            <a href={site.phoneHref}>{site.phone}</a>.
+          </p>
+          <a href="/" class="btn btn--dark">Back to Home</a>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="info">
+        <div class="info-card info-card--dark">
+          <h3>Prefer to talk?</h3>
+          <p>Call or text — you’ll get a real person, usually the owner.</p>
+          <a href={site.phoneHref} class="info-card__phone"><Icon name="phone" size={24} /> {site.phone}</a>
+        </div>
+
+        <div class="info-card">
+          <ul class="info-list">
+            <li>
+              <span class="info-list__icon"><Icon name="mail" size={20} /></span>
+              <div><strong>Email</strong><a href={`mailto:${site.email}`}>{site.email}</a></div>
+            </li>
+            <li>
+              <span class="info-list__icon"><Icon name="pin" size={20} /></span>
+              <div><strong>Office</strong><span>{site.address}</span></div>
+            </li>
+            <li>
+              <span class="info-list__icon"><Icon name="clock" size={20} /></span>
+              <div>
+                <strong>Hours</strong>
+                <table class="hours">
+                  <tbody>
+                    {site.hours.map((h) => <tr><th scope="row">{h.days}</th><td>{h.time}</td></tr>)}
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-photo">
+          <Image src={sideImg} alt="Tractor working an open field" widths={[400, 720]} sizes="(max-width: 960px) 100vw, 380px" />
+          <div class="info-photo__text">
+            <strong>Serving {site.region}</strong>
+            <span>{site.serviceAreas.slice(0, 5).join(' · ')} &amp; more</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Good to know</span>
+        <h2>What happens next?</h2>
+      </div>
+      <ol class="next">
+        <li><span>1</span><h3>We call you back</h3><p>Usually same day, always within one business day.</p></li>
+        <li><span>2</span><h3>We walk your land</h3><p>A free on-site visit to see the property and hear your goals.</p></li>
+        <li><span>3</span><h3>You get a written quote</h3><p>Clear, detailed pricing — no hidden fees, no pressure.</p></li>
+      </ol>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact-section {
+    background: linear-gradient(180deg, var(--cream) 0, var(--white) 420px);
+  }
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: clamp(2rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border-top: 6px solid var(--red);
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    margin-top: clamp(-7rem, -8vw, -3rem);
+    position: relative;
+    z-index: 2;
+  }
+  .form-card__head h2 {
+    margin-bottom: 0.25rem;
+  }
+  .form-card__head p {
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .req {
+    color: var(--red);
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 1.75rem;
+    min-width: 0;
+  }
+  legend {
+    font-family: var(--font-head);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.95rem;
+    color: var(--red);
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem 1.25rem;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .field--full {
+    grid-column: 1 / -1;
+  }
+  label,
+  .label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem; /* prevents iOS zoom */
+    color: var(--charcoal);
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease;
+    appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23d7192d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.75rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 130px;
+  }
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--line);
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--black);
+    background: var(--white);
+  }
+  .field.invalid input,
+  .field.invalid select,
+  .field.invalid textarea {
+    border-color: var(--red);
+    background: var(--red-tint);
+  }
+  .error {
+    color: var(--red-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+    min-height: 0;
+  }
+  .error:empty {
+    display: none;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .chip {
+    position: relative;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .chip span {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 2px solid var(--line);
+    transition: all 0.15s ease;
+  }
+  .chip:hover span {
+    border-color: var(--black);
+  }
+  .chip input:checked + span {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+  .chip input:focus-visible + span {
+    outline: 3px solid var(--red);
+    outline-offset: 2px;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .submit {
+    width: 100%;
+    padding-block: 1.1rem;
+    font-size: 1.1rem;
+  }
+  .submit[disabled] {
+    opacity: 0.7;
+    cursor: wait;
+  }
+  .form-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+  .form-status {
+    text-align: center;
+    margin: 0.5rem 0 0;
+    font-weight: 600;
+    color: var(--red-dark);
+  }
+  .form-status:empty {
+    display: none;
+  }
+
+  .success {
+    text-align: center;
+    padding: 2rem 0.5rem;
+  }
+  .success__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--red-tint);
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+  .success p {
+    color: var(--gray);
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .success a:not(.btn) {
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* sidebar */
+  .info {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .info-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+  .info-card--dark {
+    background: var(--black);
+    color: var(--white);
+    border: 0;
+  }
+  .info-card--dark p {
+    color: var(--gray-light);
+  }
+  .info-card__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-head);
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .info-card__phone :global(svg) {
+    color: var(--red);
+  }
+  .info-card__phone:hover {
+    color: var(--red);
+  }
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.4rem;
+  }
+  .info-list li {
+    display: flex;
+    gap: 1rem;
+  }
+  .info-list__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--red);
+    color: var(--white);
+  }
+  .info-list div {
+    display: grid;
+    min-width: 0;
+  }
+  .info-list strong {
+    font-family: var(--font-head);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .info-list a,
+  .info-list span {
+    color: var(--gray);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .info-list a:hover {
+    color: var(--red);
+  }
+  .hours {
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    color: var(--gray);
+  }
+  .hours th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.15rem 1rem 0.15rem 0;
+    white-space: nowrap;
+  }
+  .hours td {
+    padding: 0.15rem 0;
+  }
+  .info-photo {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .info-photo :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .info-photo__text {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1.25rem 1.1rem;
+    background: linear-gradient(0deg, rgba(13, 13, 13, 0.92), transparent);
+    color: var(--white);
+    display: grid;
+  }
+  .info-photo__text strong {
+    font-family: var(--font-head);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+  }
+  .info-photo__text span {
+    font-size: 0.9rem;
+    color: #d6d6d6;
+  }
+
+  .next {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .next li {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+  .next span {
+    display: inline-grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .next p {
+    color: var(--gray);
+    margin: 0;
+  }
+
+  @media (max-width: 960px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+    .info {
+      grid-template-columns: 1fr 1fr;
+    }
+    .info-photo {
+      grid-column: 1 / -1;
+    }
+    .info-photo :global(img) {
+      aspect-ratio: 16 / 7;
+    }
+  }
+  @media (max-width: 640px) {
+    .grid-2,
+    .info,
+    .next {
+      grid-template-columns: 1fr;
+    }
+    .info-photo :global(img) {
+      aspect-ratio: 4 / 3;
+    }
+    .form-card {
+      margin-top: -2rem;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#quote-form');
+  const success = document.querySelector<HTMLElement>('.success');
+  const status = document.querySelector<HTMLElement>('.form-status');
+
+  if (form) {
+    // Pre-select the service when arriving from a service page (?service=slug)
+    const preset = new URLSearchParams(location.search).get('service');
+    const serviceSelect = form.querySelector<HTMLSelectElement>('#service');
+    if (preset && serviceSelect && [...serviceSelect.options].some((o) => o.value === preset)) {
+      serviceSelect.value = preset;
+    }
+
+    const messages: Record<string, string> = {
+      name: 'Please enter your name.',
+      phone: 'Please enter a valid phone number.',
+      email: 'Please enter a valid email address.',
+      property_location: 'Let us know where the property is.',
+      service: 'Please choose a service.',
+      message: 'Please add a few details about your project.',
+    };
+
+    type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+    const validate = (el: Field) => {
+      const wrap = el.closest('.field');
+      const err = wrap?.querySelector('.error');
+      const ok = el.checkValidity();
+      wrap?.classList.toggle('invalid', !ok);
+      el.setAttribute('aria-invalid', String(!ok));
+      if (err) err.textContent = ok ? '' : messages[el.name] ?? 'This field is required.';
+      return ok;
+    };
+
+    const fields = [...form.querySelectorAll<Field>('[required]')];
+    fields.forEach((el) => {
+      el.addEventListener('blur', () => validate(el));
+      el.addEventListener('input', () => {
+        if (el.closest('.field')?.classList.contains('invalid')) validate(el);
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (status) status.textContent = '';
+
+      const results = fields.map(validate);
+      if (results.includes(false)) {
+        fields[results.indexOf(false)].focus();
+        return;
+      }
+
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return; // bot
+
+      const btn = form.querySelector<HTMLButtonElement>('.submit');
+      const label = form.querySelector<HTMLElement>('.submit__label');
+      if (btn) btn.disabled = true;
+      if (label) label.textContent = 'Sending…';
+
+      try {
+        const endpoint = form.dataset.endpoint;
+        if (endpoint) {
+          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error('Request failed');
+        } else {
+          await new Promise((r) => setTimeout(r, 700)); // demo mode
+        }
+        form.hidden = true;
+        form.parentElement?.querySelector('.form-card__head')?.setAttribute('hidden', '');
+        if (success) {
+          success.hidden = false;
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } catch {
+        if (status) status.textContent = 'Sorry, something went wrong. Please call us or try again.';
+        if (btn) btn.disabled = false;
+        if (label) label.textContent = 'Send My Request';
+      }
+    });
+  }
+</script>

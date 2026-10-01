@@ -1,0 +1,151 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site, services } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <Logo light />
+      <p>
+        Family-owned and operated since {site.founded}. We clear land the right way — honest pricing, hard work and
+        respect for your property.
+      </p>
+      <div class="footer__social">
+        <a href={site.social.facebook} aria-label="Facebook"><Icon name="facebook" size={20} /></a>
+        <a href={site.social.instagram} aria-label="Instagram"><Icon name="instagram" size={20} /></a>
+        <a href={site.social.google} aria-label="Google reviews"><Icon name="google" size={20} /></a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Services</h4>
+      <ul class="footer__links">
+        {services.map((s) => <li><a href={`/services/${s.slug}`}>{s.title}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h4>Company</h4>
+      <ul class="footer__links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Free Estimate</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Get in Touch</h4>
+      <ul class="footer__contact">
+        <li><Icon name="phone" size={18} /><a href={site.phoneHref}>{site.phone}</a></li>
+        <li><Icon name="mail" size={18} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><Icon name="pin" size={18} /><span>{site.address}</span></li>
+        <li><Icon name="clock" size={18} /><span>Mon–Fri 7am–6pm<br />Sat 8am–2pm</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <span>&copy; {year} {site.name}. All rights reserved.</span>
+      <span>Licensed &amp; Insured · Locally Owned in {site.region}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--black);
+    color: #bdbdbd;
+    border-top: 5px solid var(--red);
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.8fr 1.2fr;
+    gap: 2.5rem;
+    padding-block: clamp(3.5rem, 7vw, 5rem);
+  }
+  .footer__brand p {
+    margin-top: 1.25rem;
+    max-width: 34ch;
+  }
+  h4 {
+    color: var(--white);
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+  }
+  .footer__links,
+  .footer__contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .footer a {
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .footer a:hover {
+    color: var(--red);
+  }
+  .footer__contact li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+  .footer__contact :global(svg) {
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+  }
+  .footer__contact a,
+  .footer__contact span {
+    overflow-wrap: anywhere;
+  }
+  .footer__social {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .footer__social a {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--charcoal-2);
+    color: var(--white);
+  }
+  .footer__social a:hover {
+    background: var(--red);
+    color: var(--white);
+  }
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.9rem;
+  }
+  .footer__bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    padding-block: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

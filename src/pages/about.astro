@@ -1,0 +1,509 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, testimonials } from '../data/site';
+
+import heroImg from '../assets/images/forest-path.jpg';
+import ownerImg from '../assets/images/owner-chainsaw.jpg';
+import truckImg from '../assets/images/truck.jpg';
+import handshakeImg from '../assets/images/handshake.jpg';
+import loaderImg from '../assets/images/loader.jpg';
+import excavatorImg from '../assets/images/excavator-rocks.jpg';
+import mulcherImg from '../assets/images/forestry-mulching.jpg';
+import dozerImg from '../assets/images/land-clearing.jpg';
+import landImg from '../assets/images/forest-land.jpg';
+
+const years = new Date().getFullYear() - site.founded;
+
+const values = [
+  { icon: 'handshake', title: 'Our Word Matters', text: 'If we say we’ll be there Tuesday at 7, we’re there Tuesday at 7. Simple as that.' },
+  { icon: 'heart', title: 'Respect for the Land', text: 'We protect your topsoil, your best trees and your neighbors’ property lines.' },
+  { icon: 'shield', title: 'Safety First, Always', text: 'Trained operators, maintained machines and full insurance on every job.' },
+  { icon: 'users', title: 'Community Roots', text: 'We sponsor local ball teams, the county fair and help neighbors after storms.' },
+];
+
+const timeline = [
+  { year: String(site.founded), title: 'One dozer & a dream', text: 'Started by our founder with a used dozer, a borrowed trailer and a lot of grit.' },
+  { year: String(site.founded + 4), title: 'Added forestry mulching', text: 'Invested in our first mulcher to offer cleaner, faster clearing with no burn piles.' },
+  { year: String(site.founded + 9), title: 'Full site-prep crew', text: 'Expanded into dirt work — pads, driveways and drainage — for a true one-call solution.' },
+  { year: 'Today', title: 'Still family run', text: `A crew of 12, a fleet of modern equipment, and the same handshake promise.` },
+];
+
+const equipment = [
+  { img: mulcherImg, title: 'Forestry Mulchers', alt: 'Forestry mulching machine in pine trees' },
+  { img: dozerImg, title: 'Dozers', alt: 'Dozer clearing brush in the woods' },
+  { img: excavatorImg, title: 'Excavators', alt: 'Excavator on rocky ground' },
+  { img: loaderImg, title: 'Loaders & Skid Steers', alt: 'Wheel loader on a job site' },
+];
+---
+
+<Layout
+  title="About Us"
+  description={`Meet the family behind ${site.name}. Locally owned and operated in ${site.region} since ${site.founded}.`}
+>
+  <PageHero
+    title="Rooted Right Here at Home"
+    eyebrow="About Red Oak"
+    subtitle={`A family-owned land clearing company serving ${site.region} since ${site.founded}. We’re your neighbors — and we work like it.`}
+    image={heroImg}
+    imageAlt="Sunlight streaming through a forest path"
+    crumbs={[{ label: 'About' }]}
+  />
+
+  <!-- STORY -->
+  <section class="section">
+    <div class="container story">
+      <div class="story__media reveal">
+        <Image src={ownerImg} alt="Our founder cutting logs on a job site" widths={[480, 720, 960]} sizes="(max-width: 900px) 100vw, 540px" />
+        <div class="story__sig">
+          <strong>Jake Whitfield</strong>
+          <span>Founder &amp; Owner-Operator</span>
+        </div>
+      </div>
+      <div class="story__text reveal">
+        <span class="eyebrow">Our story</span>
+        <h2>Built one property — and one neighbor — at a time</h2>
+        <p>
+          Red Oak Land Clearing started in {site.founded} when our founder, Jake, bought a tired old dozer and started
+          clearing fence lines for folks around {site.city}. Word got around that he worked hard, charged fair and left
+          every place cleaner than he found it.
+        </p>
+        <p>
+          {years} years later, we’re a crew of 12 with a fleet of modern equipment — but not much else has changed. We
+          still walk every property ourselves, we still answer our own phones, and we still believe a handshake means
+          something.
+        </p>
+        <p>
+          Whether you’re a first-time homebuyer clearing a lot, a farmer opening up pasture, or a builder who needs a
+          reliable partner, we’d be honored to earn your business.
+        </p>
+        <div class="story__stats">
+          <div><strong>{years}+</strong><span>Years</span></div>
+          <div><strong>12</strong><span>Crew members</span></div>
+          <div><strong>2,500+</strong><span>Acres cleared</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we stand for</span>
+        <h2>Small-town values, professional results</h2>
+      </div>
+      <div class="values">
+        {
+          values.map((v) => (
+            <div class="value reveal">
+              <span class="value__icon">
+                <Icon name={v.icon} size={30} />
+              </span>
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section">
+    <div class="container journey">
+      <div class="journey__text">
+        <span class="eyebrow">Our journey</span>
+        <h2>From one machine to a full-service crew</h2>
+        <ol class="timeline">
+          {
+            timeline.map((t) => (
+              <li class="reveal">
+                <span class="timeline__year">{t.year}</span>
+                <div>
+                  <h3>{t.title}</h3>
+                  <p>{t.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <div class="journey__media reveal">
+        <Image src={truckImg} alt="Work truck with flatbed parked outside" widths={[400, 640, 800]} sizes="(max-width: 900px) 100vw, 460px" class="journey__img1" />
+        <Image src={handshakeImg} alt="Two people shaking hands on a deal" widths={[400, 640, 800]} sizes="(max-width: 900px) 100vw, 460px" class="journey__img2" />
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">The right tools</span>
+        <h2>Our equipment fleet</h2>
+        <p>Well-maintained, modern machines sized for everything from tight backyards to hundred-acre tracts.</p>
+      </div>
+      <div class="fleet reveal">
+        {
+          equipment.map((e) => (
+            <figure class="fleet__item">
+              <Image src={e.img} alt={e.alt} widths={[400, 640]} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px" />
+              <figcaption>{e.title}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG QUOTE -->
+  <section class="banner">
+    <Image src={landImg} alt="" widths={[640, 1280, 1920]} sizes="100vw" class="banner__bg" />
+    <div class="container banner__inner reveal">
+      <Icon name="star" size={28} />
+      <blockquote>“{testimonials[0].quote}”</blockquote>
+      <cite>— {testimonials[0].name}, {testimonials[0].location}</cite>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section class="section">
+    <div class="container creds reveal">
+      <div class="cred"><Icon name="shield" size={34} /><div><strong>Fully Insured</strong><span>General liability &amp; workers’ comp</span></div></div>
+      <div class="cred"><Icon name="award" size={34} /><div><strong>Certified Operators</strong><span>Trained &amp; safety certified</span></div></div>
+      <div class="cred"><Icon name="star" size={34} /><div><strong>5-Star Rated</strong><span>Hundreds of happy customers</span></div></div>
+      <div class="cred"><Icon name="leaf" size={34} /><div><strong>Land Stewards</strong><span>Erosion-conscious practices</span></div></div>
+    </div>
+  </section>
+
+  <CtaBand title="Let’s talk about your land" />
+</Layout>
+
+<style>
+  .story {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .story__media {
+    position: relative;
+  }
+  .story__media :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 20% center;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+  .story__sig {
+    position: absolute;
+    right: -1rem;
+    bottom: 2rem;
+    background: var(--black);
+    color: var(--white);
+    padding: 1rem 1.4rem;
+    border-radius: var(--radius);
+    border-left: 5px solid var(--red);
+    display: grid;
+  }
+  .story__sig strong {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .story__sig span {
+    font-size: 0.9rem;
+    color: var(--gray-light);
+  }
+  .story__text p {
+    color: var(--gray);
+  }
+  .story__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .story__stats div {
+    padding: 1.1rem;
+    text-align: center;
+    border-radius: var(--radius);
+    background: var(--cream);
+    border-bottom: 4px solid var(--red);
+    display: grid;
+  }
+  .story__stats strong {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  .story__stats span {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+  }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .value {
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--charcoal);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition:
+      border-color 0.25s ease,
+      background 0.25s ease;
+  }
+  .value:hover {
+    border-color: var(--red);
+    background: var(--charcoal-2);
+  }
+  .value__icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    margin-bottom: 1.25rem;
+  }
+  .value h3 {
+    font-size: 1.2rem;
+  }
+  .value p {
+    color: var(--gray-light);
+    margin: 0;
+  }
+
+  .journey {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 44px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: var(--line);
+  }
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.25rem;
+    padding-bottom: 1.75rem;
+  }
+  .timeline__year {
+    position: relative;
+    z-index: 1;
+    align-self: start;
+    text-align: center;
+    padding: 0.4rem 0;
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-head);
+    font-weight: 600;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+  .timeline h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+  .timeline p {
+    color: var(--gray);
+    margin: 0;
+  }
+  .journey__media {
+    position: relative;
+    padding-bottom: 30%;
+  }
+  .journey__media :global(img) {
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    box-shadow: var(--shadow-lg);
+  }
+  .journey__media :global(.journey__img1) {
+    width: 85%;
+    aspect-ratio: 4 / 3;
+  }
+  .journey__media :global(.journey__img2) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 62%;
+    aspect-ratio: 4 / 3;
+    border: 6px solid var(--white);
+  }
+
+  .fleet {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  .fleet__item {
+    position: relative;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+  }
+  .fleet__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .fleet__item:hover :global(img) {
+    transform: scale(1.06);
+  }
+  .fleet__item figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1.25rem 1.1rem;
+    background: linear-gradient(0deg, rgba(13, 13, 13, 0.9), transparent);
+    color: var(--white);
+    font-family: var(--font-head);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 4px solid var(--red);
+  }
+
+  .banner {
+    position: relative;
+    isolation: isolate;
+    color: var(--white);
+    text-align: center;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(13, 13, 13, 0.78);
+  }
+  .banner__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .banner__inner {
+    max-width: 880px;
+    padding-block: clamp(4rem, 9vw, 6.5rem);
+  }
+  .banner__inner :global(svg) {
+    color: var(--red);
+  }
+  .banner blockquote {
+    margin: 1rem 0 1.25rem;
+    font-family: var(--font-head);
+    font-size: clamp(1.35rem, 2.8vw, 2rem);
+    line-height: 1.35;
+    font-weight: 400;
+  }
+  .banner cite {
+    font-style: normal;
+    color: var(--gray-light);
+    font-weight: 600;
+  }
+
+  .creds {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  .cred {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .cred :global(svg) {
+    color: var(--red);
+    flex-shrink: 0;
+  }
+  .cred div {
+    display: grid;
+  }
+  .cred strong {
+    font-family: var(--font-head);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.1rem;
+  }
+  .cred span {
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+
+  @media (max-width: 1024px) {
+    .values,
+    .fleet,
+    .creds {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 900px) {
+    .story,
+    .journey {
+      grid-template-columns: 1fr;
+    }
+    .story__media {
+      max-width: 520px;
+    }
+    .story__sig {
+      right: 1rem;
+    }
+    .journey__media {
+      max-width: 560px;
+    }
+  }
+  @media (max-width: 560px) {
+    .values,
+    .creds {
+      grid-template-columns: 1fr;
+    }
+    .fleet {
+      gap: 0.75rem;
+    }
+    .story__stats strong {
+      font-size: 1.6rem;
+    }
+    .timeline li {
+      grid-template-columns: 72px 1fr;
+      gap: 1rem;
+    }
+    .timeline::before {
+      left: 35px;
+    }
+  }
+</style>

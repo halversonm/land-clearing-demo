@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import heroImg from '../assets/images/stump-removal.jpg';
+---
+
+<Layout title="Page Not Found">
+  <PageHero
+    title="Looks like this trail’s been cleared"
+    eyebrow="404"
+    subtitle="We couldn’t find the page you were looking for. Let’s get you back on solid ground."
+    image={heroImg}
+    imageAlt="Tree stump in a cleared field"
+  >
+    <div class="btn-row" style="margin-top:1.5rem">
+      <a href="/" class="btn btn--red">Back to Home</a>
+      <a href="/contact" class="btn btn--outline-light">Contact Us</a>
+    </div>
+  </PageHero>
+</Layout>

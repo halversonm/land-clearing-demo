@@ -1,0 +1,782 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, services, testimonials } from '../data/site';
+
+import heroImg from '../assets/images/hero-dozer.jpg';
+import ownerImg from '../assets/images/owner-chainsaw.jpg';
+import crewImg from '../assets/images/crew-watching.jpg';
+import whyImg from '../assets/images/grapple-logs.jpg';
+
+import g1 from '../assets/images/grapple-pair.jpg';
+import g2 from '../assets/images/log-stack.jpg';
+import g3 from '../assets/images/excavator-field.jpg';
+import g4 from '../assets/images/dozer-rake.jpg';
+import g5 from '../assets/images/chainsaw-pile.jpg';
+import g6 from '../assets/images/feller-logs.jpg';
+import g7 from '../assets/images/dozer-hill.jpg';
+import g8 from '../assets/images/loader.jpg';
+import g9 from '../assets/images/excavator-rocks.jpg';
+
+const years = new Date().getFullYear() - site.founded;
+
+const stats = [
+  { value: `${years}+`, label: 'Years in business' },
+  { value: '2,500+', label: 'Acres cleared' },
+  { value: '900+', label: 'Happy neighbors' },
+  { value: '5.0', label: 'Average Google rating', star: true },
+];
+
+const reasons = [
+  { icon: 'users', title: 'Family Owned & Local', text: 'We live here too. When you call, you talk to the owner — not a call center.' },
+  { icon: 'shield', title: 'Licensed & Fully Insured', text: 'Full liability and workers’ comp coverage, so you’re protected from start to finish.' },
+  { icon: 'dollar', title: 'Honest, Upfront Pricing', text: 'Detailed written quotes with no surprise fees. The price we quote is the price you pay.' },
+  { icon: 'dozer', title: 'Modern, Well-Kept Equipment', text: 'Mulchers, dozers, excavators and skid steers sized right for every job.' },
+];
+
+const steps = [
+  { icon: 'phone', title: 'Reach Out', text: 'Call or send a quick message about your property and goals.' },
+  { icon: 'search', title: 'Free Site Walk', text: 'We walk the land with you, flag what stays and talk through options.' },
+  { icon: 'clipboard', title: 'Clear Quote', text: 'You get a detailed written estimate — usually within 48 hours.' },
+  { icon: 'sparkle', title: 'We Get to Work', text: 'Our crew shows up on time, does it right and leaves it clean.' },
+];
+
+const gallery = [
+  { src: g1, alt: 'Two grapple skidders moving logs on a cleared tract', cls: 'g-wide' },
+  { src: g2, alt: 'Neatly stacked cut logs at the edge of the woods', cls: '' },
+  { src: g3, alt: 'Excavator clearing brush beside a stand of trees', cls: '' },
+  { src: g4, alt: 'Bulldozer with root rake working in the forest', cls: 'g-tall' },
+  { src: g5, alt: 'Chainsaw resting on a freshly cut stump', cls: '' },
+  { src: g6, alt: 'Log loader stacking timber on a cleared lot', cls: '' },
+  { src: g8, alt: 'Wheel loader moving material on a job site', cls: '' },
+  { src: g7, alt: 'Bulldozer grading a hillside site', cls: 'g-wide' },
+  { src: g9, alt: 'Excavator working on rocky ground', cls: '' },
+];
+---
+
+<Layout>
+  <!-- HERO -->
+  <section class="hero">
+    <Image
+      src={heroImg}
+      alt="Bulldozer working on a wooded property"
+      widths={[640, 960, 1280, 1920]}
+      sizes="100vw"
+      class="hero__bg"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero__overlay"></div>
+    <div class="container hero__content">
+      <span class="hero__badge"><Icon name="star" size={16} /> Rated 5.0 by {site.city}-area landowners</span>
+      <h1>Clearing the Way for <span class="text-red">What’s Next</span></h1>
+      <p class="hero__lead">
+        Family-owned land clearing, forestry mulching and tree removal for homeowners, farmers and builders across {site.region}. Real people, honest prices, and work we’re proud to put our name on.
+      </p>
+      <div class="btn-row">
+        <a href="/contact" class="btn btn--red">Get a Free Estimate <Icon name="arrowRight" size={18} /></a>
+        <a href="/services" class="btn btn--outline-light">Our Services</a>
+      </div>
+      <ul class="hero__trust">
+        <li><Icon name="checkCircle" size={20} /> Licensed &amp; Insured</li>
+        <li><Icon name="checkCircle" size={20} /> Free On-Site Estimates</li>
+        <li><Icon name="checkCircle" size={20} /> Locally Owned Since {site.founded}</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="Company highlights">
+    <div class="container stats__grid">
+      {
+        stats.map((s) => (
+          <div class="stat">
+            <span class="stat__value">
+              {s.value}
+              {s.star && <Icon name="star" size={26} class="stat__star" />}
+            </span>
+            <span class="stat__label">{s.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container intro">
+      <div class="intro__media reveal">
+        <div class="intro__img intro__img--main">
+          <Image src={ownerImg} alt="Our owner cutting logs with a chainsaw" widths={[480, 720, 960]} sizes="(max-width: 900px) 90vw, 520px" />
+        </div>
+        <div class="intro__img intro__img--small">
+          <Image src={crewImg} alt="Crew watching a skid steer clear red dirt" widths={[320, 480]} sizes="(max-width: 900px) 50vw, 260px" />
+        </div>
+        <div class="intro__years">
+          <strong>{years}+</strong>
+          <span>Years serving<br />our neighbors</span>
+        </div>
+      </div>
+
+      <div class="intro__text reveal">
+        <span class="eyebrow">Your neighbors in the dirt business</span>
+        <h2>Hard work. Fair prices. A handshake you can trust.</h2>
+        <p>
+          Red Oak Land Clearing started with one used dozer, a pickup truck and a promise: treat every property like it’s
+          our own. {years} years later, we’ve grown into a full-service crew — but we still answer our own phone, show up
+          when we say we will, and stand behind every job.
+        </p>
+        <ul class="check-list">
+          <li><Icon name="check" size={22} /> Free on-site walkthroughs and written estimates</li>
+          <li><Icon name="check" size={22} /> Selective clearing that protects the trees you love</li>
+          <li><Icon name="check" size={22} /> Clean job sites — we don’t leave a mess behind</li>
+        </ul>
+        <div class="btn-row">
+          <a href="/about" class="btn btn--dark">Meet the Crew</a>
+          <a href={site.phoneHref} class="btn btn--outline-dark"><Icon name="phone" size={18} /> {site.phone}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we do</span>
+        <h2>Land Clearing Services</h2>
+        <p>From a single hazard tree to a hundred wooded acres, we have the equipment and experience to get it done right.</p>
+      </div>
+      <div class="services-grid reveal">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section section--dark why">
+    <div class="container why__grid">
+      <div class="why__text">
+        <span class="eyebrow">Why choose Red Oak</span>
+        <h2>The local crew that treats your land like their own</h2>
+        <p class="why__lead">
+          Big-city contractors come and go. We’ve built our business one referral at a time, right here in {site.region}.
+        </p>
+        <div class="reasons">
+          {
+            reasons.map((r) => (
+              <div class="reason reveal">
+                <span class="reason__icon">
+                  <Icon name={r.icon} size={26} />
+                </span>
+                <div>
+                  <h3>{r.title}</h3>
+                  <p>{r.text}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="why__media reveal">
+        <Image src={whyImg} alt="Grapple skidder hauling cleared logs" widths={[480, 720, 960]} sizes="(max-width: 960px) 100vw, 480px" />
+        <div class="why__quote">
+          <Icon name="heart" size={22} />
+          <p>“We don’t just clear land — we help folks build homes, start farms and make memories.”</p>
+          <span>— The Red Oak Family</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>Simple from start to finish</h2>
+        <p>No runaround, no pressure. Here’s what working with us looks like.</p>
+      </div>
+      <ol class="steps reveal">
+        {
+          steps.map((s, i) => (
+            <li class="step">
+              <span class="step__num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="step__icon">
+                <Icon name={s.icon} size={28} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Recent work</span>
+        <h2>From overgrown to wide open</h2>
+        <p>A look at a few of the properties we’ve had the privilege to work on lately.</p>
+      </div>
+      <div class="gallery reveal">
+        {
+          gallery.map((g) => (
+            <figure class:list={['gallery__item', g.cls]}>
+              <Image src={g.src} alt={g.alt} widths={[400, 640, 960]} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" />
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Kind words</span>
+        <h2>What our neighbors say</h2>
+      </div>
+      <div class="testimonials">
+        {
+          testimonials.map((t) => (
+            <figure class="quote reveal">
+              <div class="quote__stars" aria-label="5 out of 5 stars">
+                {Array.from({ length: 5 }).map(() => (
+                  <Icon name="star" size={18} />
+                ))}
+              </div>
+              <blockquote>“{t.quote}”</blockquote>
+              <figcaption>
+                <span class="quote__avatar">{t.name.charAt(0)}</span>
+                <span>
+                  <strong>{t.name}</strong>
+                  <small>{t.location}</small>
+                </span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA -->
+  <section class="area">
+    <div class="container area__inner reveal">
+      <div>
+        <span class="eyebrow">Service area</span>
+        <h2>Proudly serving {site.region}</h2>
+        <p>Based in {site.city}, we work within about 60 miles of home. Don’t see your town? Give us a call — we’ll likely make the trip.</p>
+      </div>
+      <ul class="area__list">
+        {site.serviceAreas.map((a) => <li><Icon name="pin" size={16} /> {a}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(88vh, 820px);
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    overflow: hidden;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(13, 13, 13, 0.92) 0%, rgba(13, 13, 13, 0.7) 50%, rgba(13, 13, 13, 0.25) 100%),
+      linear-gradient(0deg, rgba(13, 13, 13, 0.5), transparent 40%);
+  }
+  .hero__content {
+    padding-block: clamp(4rem, 10vw, 7rem);
+  }
+  .hero h1 {
+    max-width: 13ch;
+  }
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .hero__badge :global(svg) {
+    color: #ffc531;
+  }
+  .hero__lead {
+    max-width: 54ch;
+    font-size: clamp(1.08rem, 1.7vw, 1.25rem);
+    color: #e4e4e4;
+    margin-bottom: 2rem;
+  }
+  .hero__trust {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    font-weight: 600;
+  }
+  .hero__trust li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero__trust :global(svg) {
+    color: var(--red);
+  }
+
+  /* STATS */
+  .stats {
+    background: var(--red);
+    color: var(--white);
+  }
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    text-align: center;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .stat + .stat {
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  .stat__value {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-weight: 700;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+  .stat__value :global(.stat__star) {
+    color: #ffc531;
+  }
+  .stat__label {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.92;
+  }
+
+  /* INTRO */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .intro__media {
+    position: relative;
+    padding: 0 12% 14% 0;
+  }
+  .intro__img {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .intro__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 20% center;
+  }
+  .intro__img--main {
+    aspect-ratio: 4 / 4.4;
+  }
+  .intro__img--small {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 52%;
+    aspect-ratio: 4 / 3;
+    border: 6px solid var(--white);
+  }
+  .intro__years {
+    position: absolute;
+    top: 1.5rem;
+    left: -1rem;
+    background: var(--red);
+    color: var(--white);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    line-height: 1.2;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .intro__years strong {
+    font-family: var(--font-head);
+    font-size: 2.4rem;
+    line-height: 1;
+  }
+  .intro__text p {
+    color: var(--gray);
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  /* WHY */
+  .why__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .why__lead {
+    color: var(--gray-light);
+    font-size: 1.125rem;
+    margin-bottom: 2.25rem;
+  }
+  .reasons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem 2rem;
+  }
+  .reason {
+    display: flex;
+    gap: 1rem;
+  }
+  .reason__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(215, 25, 45, 0.14);
+    color: var(--red);
+    border: 1px solid rgba(215, 25, 45, 0.4);
+  }
+  .reason h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.35rem;
+  }
+  .reason p {
+    color: var(--gray-light);
+    margin: 0;
+    font-size: 0.98rem;
+  }
+  .why__media {
+    position: relative;
+  }
+  .why__media :global(img) {
+    border-radius: var(--radius-lg);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    width: 100%;
+  }
+  .why__quote {
+    position: absolute;
+    left: -2rem;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--white);
+    color: var(--charcoal);
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius);
+    border-left: 5px solid var(--red);
+    box-shadow: var(--shadow-lg);
+  }
+  .why__quote :global(svg) {
+    color: var(--red);
+  }
+  .why__quote p {
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0.4rem 0;
+  }
+  .why__quote span {
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+
+  /* STEPS */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+  .step:hover {
+    border-color: var(--red);
+    transform: translateY(-4px);
+  }
+  .step__num {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-family: var(--font-head);
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: var(--line);
+    line-height: 1;
+  }
+  .step__icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--black);
+    color: var(--white);
+    margin-bottom: 1.25rem;
+  }
+  .step:hover .step__icon {
+    background: var(--red);
+  }
+  .step p {
+    color: var(--gray);
+    margin: 0;
+  }
+
+  /* GALLERY */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    grid-auto-flow: dense;
+    gap: 1rem;
+  }
+  .gallery__item {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .gallery__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .gallery__item:hover :global(img) {
+    transform: scale(1.06);
+  }
+  .g-wide {
+    grid-column: span 2;
+  }
+  .g-tall {
+    grid-row: span 2;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  .quote {
+    margin: 0;
+    padding: 2rem;
+    background: var(--cream);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .quote::before {
+    content: '“';
+    position: absolute;
+    right: 1.5rem;
+    top: 0.25rem;
+    font-family: Georgia, serif;
+    font-size: 6rem;
+    line-height: 1;
+    color: rgba(215, 25, 45, 0.15);
+  }
+  .quote__stars {
+    display: flex;
+    gap: 2px;
+    color: #f5b301;
+    margin-bottom: 1rem;
+  }
+  blockquote {
+    margin: 0 0 1.5rem;
+    flex: 1;
+    font-size: 1.05rem;
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  figcaption small {
+    display: block;
+    color: var(--gray);
+  }
+  .quote__avatar {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+  }
+
+  /* AREA */
+  .area {
+    background: var(--charcoal);
+    color: var(--white);
+    padding-block: clamp(3rem, 7vw, 4.5rem);
+  }
+  .area__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 2rem 4rem;
+    align-items: center;
+  }
+  .area p {
+    color: var(--gray-light);
+    margin: 0;
+  }
+  .area__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem 1.5rem;
+  }
+  .area__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius);
+    font-weight: 600;
+  }
+  .area__list :global(svg) {
+    color: var(--red);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .services-grid,
+    .testimonials {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 960px) {
+    .intro,
+    .why__grid,
+    .area__inner {
+      grid-template-columns: 1fr;
+    }
+    .intro__media {
+      max-width: 560px;
+    }
+    .why__media {
+      max-width: 520px;
+    }
+    .why__quote {
+      left: 1rem;
+      right: 1rem;
+    }
+  }
+  @media (max-width: 720px) {
+    .stats__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat:nth-child(3) {
+      border-left: 0;
+    }
+    .stat:nth-child(n + 3) {
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .services-grid,
+    .testimonials,
+    .reasons {
+      grid-template-columns: 1fr;
+    }
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 170px;
+    }
+    .g-tall {
+      grid-row: span 1;
+    }
+    .intro__years {
+      left: 0.5rem;
+    }
+  }
+  @media (max-width: 520px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .area__list {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .hero .btn-row .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>
